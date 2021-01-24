@@ -1,5 +1,5 @@
 # File: .github/workflows/repo-sync.yml
-name: sync-LXK9301-scripts
+name: sync-dhy1233/jdc
 on:
   schedule:
     - cron: '1 0,15 * * *'
@@ -9,24 +9,23 @@ on:
   push:
     branches: [ master ]
   repository_dispatch:
-    types: sync-LXK9301-scripts
+    types: sync-dhy1233/jdc
 jobs:
   repo-sync:
     env:
       PAT: ${{ secrets.PAT }} #此处PAT需要申请，教程详见：https://www.jianshu.com/p/bb82b3ad1d11
-      dst_key: ${{ secrets.GITEE_PRIVATE_KEY }} # 我自己同步到gitee使用，其他人可忽略
+      dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
     runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == github.event.sender.id
     steps:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
 
-      - name: sync LXK9301-scripts
+      - name: sync dhy1233/jdc
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
-          source_repo: "https://github.com/LXK9301/jd_scripts.git"
+          source_repo: "https://github.com/dhy1233/jdc.git"
           source_branch: "master"
           destination_branch: "master"
           github_token: ${{ secrets.PAT }}
@@ -35,8 +34,8 @@ jobs:
         uses: Yikun/hub-mirror-action@master
         if: env.dst_key
         with:
-          src: github/LXK9301
-          dst: gitee/lxk0301
-          static_list: "jd_scripts"
+          src: github/dhy1233
+          dst: gitee/dhy1233
+          static_list: "scripts"
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token: ${{ secrets.GITEE_TOKEN }}
